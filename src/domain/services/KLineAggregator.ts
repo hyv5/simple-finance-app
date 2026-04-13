@@ -1,5 +1,4 @@
 import { KLine } from '../entities';
-import { KLineType } from '../../constants/api';
 
 /**
  * K线聚合器 - 将低周期数据聚合为高周期

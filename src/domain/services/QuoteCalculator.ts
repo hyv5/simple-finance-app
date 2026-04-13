@@ -1,6 +1,5 @@
 import { Quote } from '../entities';
 import { CONVERSION } from '../../constants/api';
-import { getDisplayName } from './QuoteUtils';
 
 /**
  * 自定义指标计算器

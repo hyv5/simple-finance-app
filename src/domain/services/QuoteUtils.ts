@@ -1,4 +1,3 @@
-import { Quote } from '../entities';
 import { SYMBOL_NAME_MAP } from '../../constants/api';
 
 /**

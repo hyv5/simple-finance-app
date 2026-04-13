@@ -142,7 +142,7 @@ export default function WatchlistScreen() {
     unknown: true,
   });
 
-  const { funds, addFund, removeFund } = useFundManager();
+  const { funds, addFund } = useFundManager();
   const textColor = useThemeColor({}, 'text');
   
   // 批量获取所有自选数据

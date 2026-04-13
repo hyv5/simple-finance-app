@@ -1,5 +1,6 @@
 import React, { useMemo } from 'react';
 import { View, StyleSheet, ActivityIndicator } from 'react-native';
+// eslint-disable-next-line import/no-unresolved -- Native module, not available in CI
 import { KLineView } from 'react-native-kline-view';
 import { useThemeColor } from '@/hooks/use-theme-color';
 import { KLine } from '@/src/domain/entities';
