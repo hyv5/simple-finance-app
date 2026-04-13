@@ -166,7 +166,7 @@ export const parseQuote = (symbol: string, rawData: string): Quote => {
     return parseFXQuote(symbol, rawData);
   } else if (symbol.startsWith('f_')) {
     return parseFundQuote(symbol, rawData);
-  } else if (symbol.startsWith('binance_')) {
+  } else if (symbol.startsWith('gateio_')) {
     return parseBinanceTicker(symbol, rawData);
   }
 
@@ -176,15 +176,20 @@ export const parseQuote = (symbol: string, rawData: string): Quote => {
 /**
  * Binance 加密货币行情解析器
  */
-export const parseBinanceTicker = (symbol: string, rawData: string): Quote => {
-  const data = JSON.parse(rawData);
-  const price = parseFloat(data.lastPrice);
-  const prevClose = price - parseFloat(data.priceChange);
-  const change = parseFloat(data.priceChange);
-  const changePercent = parseFloat(data.priceChangePercent);
+export const parseGateioTicker = (symbol: string, rawData: string): Quote => {
+  const dataArray = JSON.parse(rawData);
+  const data = Array.isArray(dataArray) ? dataArray[0] : dataArray;
+  const price = parseFloat(data.last);
+  const changePercent = parseFloat(data.change_percentage) || 0;
+  const high = parseFloat(data.high_24h);
+  const low = parseFloat(data.low_24h);
+  // Gate.io doesn't provide open/prevClose directly, calculate from change_percentage
+  const prevClose = changePercent !== 0 ? price / (1 + changePercent / 100) : price;
+  const change = price - prevClose;
+  const open = prevClose; // approximate open as prevClose
 
-  // 去除 binance_ 前缀用于名称查找
-  const cleanSymbol = symbol.replace('binance_', '');
+  // 去除 gateio_ 前缀用于名称查找
+  const cleanSymbol = symbol.replace('gateio_', '');
 
   return {
     symbol,
@@ -192,13 +197,13 @@ export const parseBinanceTicker = (symbol: string, rawData: string): Quote => {
     price,
     change,
     changePercent,
-    high: parseFloat(data.highPrice),
-    low: parseFloat(data.lowPrice),
-    open: parseFloat(data.openPrice),
+    high,
+    low,
+    open,
     prevClose: prevClose > 0 ? prevClose : price,
-    volume: parseFloat(data.volume),
-    amount: parseFloat(data.quoteVolume),
-    time: new Date(data.closeTime).toLocaleString('zh-CN', { 
+    volume: parseFloat(data.base_volume) || 0,
+    amount: parseFloat(data.quote_volume) || 0,
+    time: new Date().toLocaleString('zh-CN', {
       timeZone: 'Asia/Shanghai',
       month: '2-digit',
       day: '2-digit',
