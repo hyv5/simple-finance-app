@@ -2,7 +2,6 @@
  * ECharts 配置生成器
  */
 
-import { KLine } from '@/src/domain/entities';
 import { KLineType } from '@/src/constants/api';
 
 interface ChartData {
