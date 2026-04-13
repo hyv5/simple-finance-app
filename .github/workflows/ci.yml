@@ -73,11 +73,25 @@ jobs:
       - name: Prebuild Android
         run: npx expo prebuild --platform android --clean
 
+      - name: Setup Keystore
+        run: |
+          mkdir -p android/app/keystore
+          echo "${{ secrets.RELEASE_KEYSTORE }}" | base64 -d > android/app/keystore/release-key.jks
+
+      - name: Create signing config
+        run: |
+          cat > android/app/signing.properties << 'SIGNEOF'
+          MYAPP_RELEASE_STORE_FILE=keystore/release-key.jks
+          MYAPP_RELEASE_KEY_ALIAS=${{ secrets.RELEASE_KEY_ALIAS }}
+          MYAPP_RELEASE_STORE_PASSWORD=${{ secrets.RELEASE_KEYSTORE_PASSWORD }}
+          MYAPP_RELEASE_KEY_PASSWORD=${{ secrets.RELEASE_KEY_PASSWORD }}
+          SIGNEOF
+
       - name: Build APK (release)
         run: |
           cd android
           chmod +x ./gradlew
-          ./gradlew assembleRelease
+          ./gradlew assembleRelease -PsigningConfigFile=../app/signing.properties
 
       - name: Upload APK artifact
         uses: actions/upload-artifact@v4
@@ -102,7 +116,7 @@ jobs:
         with:
           tag_name: latest
           name: "📱 Latest Build"
-          body: "Latest APK build from main branch. Auto-updated on every push.\n\nCommit: ${{ github.sha }}\nDate: ${{ github.event.head_commit.timestamp }}"
+          body: "Latest signed release APK from main branch.\n\nCommit: ${{ github.sha }}\nDate: ${{ github.event.head_commit.timestamp }}"
           files: android/app/build/outputs/apk/release/app-release.apk
           draft: false
           prerelease: false
