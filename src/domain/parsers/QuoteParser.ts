@@ -168,5 +168,45 @@ export const parseQuote = (symbol: string, rawData: string): Quote => {
     return parseFundQuote(symbol, rawData);
   }
 
+  } else if (symbol.startsWith('binance_')) {
+    return parseBinanceTicker(symbol, rawData);
+  }
+
   throw new Error(`Unknown symbol type: ${symbol}`);
+};
+
+/**
+ * Binance 加密货币行情解析器
+ */
+export const parseBinanceTicker = (symbol: string, rawData: string): Quote => {
+  const data = JSON.parse(rawData);
+  const price = parseFloat(data.lastPrice);
+  const prevClose = price - parseFloat(data.priceChange);
+  const change = parseFloat(data.priceChange);
+  const changePercent = parseFloat(data.priceChangePercent);
+
+  // 去除 binance_ 前缀用于名称查找
+  const cleanSymbol = symbol.replace('binance_', '');
+
+  return {
+    symbol,
+    name: getDisplayName(symbol, cleanSymbol),
+    price,
+    change,
+    changePercent,
+    high: parseFloat(data.highPrice),
+    low: parseFloat(data.lowPrice),
+    open: parseFloat(data.openPrice),
+    prevClose: prevClose > 0 ? prevClose : price,
+    volume: parseFloat(data.volume),
+    amount: parseFloat(data.quoteVolume),
+    time: new Date(data.closeTime).toLocaleString('zh-CN', { 
+      timeZone: 'Asia/Shanghai',
+      month: '2-digit',
+      day: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+    }),
+  };
 };
