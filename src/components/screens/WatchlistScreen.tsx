@@ -1,5 +1,5 @@
 import React, { useCallback, useState, useMemo } from 'react';
-import { View, StyleSheet, RefreshControl, ScrollView, ActivityIndicator, Text, Pressable, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, RefreshControl, ScrollView, ActivityIndicator, Text, TouchableOpacity, TextInput } from 'react-native';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { useQuotes, useFundManager } from '@/src/hooks';
@@ -7,7 +7,6 @@ import { useQueryClient } from '@tanstack/react-query';
 import { useThemeColor } from '@/hooks/use-theme-color';
 import { Quote } from '@/src/domain/entities';
 import { searchSymbols } from '@/src/api/search';
-import { TextInput } from 'react-native';
 import { getSymbolCategory, getCategoryName, groupByCategory, SymbolCategory } from '@/src/utils/symbolCategory';
 import { useRouter } from 'expo-router';
 
