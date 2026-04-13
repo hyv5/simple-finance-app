@@ -167,14 +167,14 @@ export const parseQuote = (symbol: string, rawData: string): Quote => {
   } else if (symbol.startsWith('f_')) {
     return parseFundQuote(symbol, rawData);
   } else if (symbol.startsWith('gateio_')) {
-    return parseBinanceTicker(symbol, rawData);
+    return parseGateioTicker(symbol, rawData);
   }
 
   throw new Error(`Unknown symbol type: ${symbol}`);
 };
 
 /**
- * Binance 加密货币行情解析器
+ * Gate.io 加密货币行情解析器
  */
 export const parseGateioTicker = (symbol: string, rawData: string): Quote => {
   const dataArray = JSON.parse(rawData);
