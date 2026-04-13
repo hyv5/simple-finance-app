@@ -1,13 +1,10 @@
-import React from 'react';
-import { View, StyleSheet, ActivityIndicator, ScrollView, Text } from 'react-native';
+import React, { useState } from 'react';
+import { View, StyleSheet, ActivityIndicator, ScrollView, Text, TouchableOpacity } from 'react-native';
 import { Stack, useLocalSearchParams } from 'expo-router';
-import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { ProfessionalKLineChart } from '@/src/components/features/KLineChart';
 import { useQuote, useKLine } from '@/src/hooks';
 import { KLineType } from '@/src/constants/api';
-import { useState } from 'react';
-import { TouchableOpacity } from 'react-native';
 import { useThemeColor } from '@/hooks/use-theme-color';
 
 /**
