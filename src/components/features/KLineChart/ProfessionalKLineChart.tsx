@@ -106,7 +106,7 @@ export const ProfessionalKLineChart: React.FC<ProfessionalKLineChartProps> = ({
     };
 
     return JSON.stringify(config);
-  }, [data, isDark, textColor]);
+  }, [data, isDark]);
 
   if (isLoading || !optionList) {
     return (
