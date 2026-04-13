@@ -20,7 +20,7 @@ export const fetchRawQuote = async (symbol: string): Promise<string> => {
 };
 
 /**
- * 从 Binance 获取单个币种行情
+ * 从 Gate.io 获取单个币种行情
  */
 export const fetchGateioTicker = async (symbol: string): Promise<string> => {
   const response = await httpClient.get(`${GATEIO_API_BASE}/spot/tickers`, {
@@ -32,14 +32,14 @@ export const fetchGateioTicker = async (symbol: string): Promise<string> => {
 /**
  * 根据品种前缀判断数据源
  */
-const isGateioSymbol = (symbol: string): boolean => symbol.startsWith('gateio_);
+const isGateioSymbol = (symbol: string): boolean => symbol.startsWith('gateio_');
 
 /**
- * 将品种拆分为 Sina 和 Binance 两组
+ * 将品种拆分为 Sina 和 Gate.io 两组
  */
 const splitBySource = (symbols: string[]): { sina: string[]; gateio: string[] } => {
   const sina: string[] = [];
-  const binance: string[] = [];
+  const gateio: string[] = [];
   symbols.forEach(s => {
     if (isGateioSymbol(s)) gateio.push(s);
     else sina.push(s);
@@ -48,7 +48,7 @@ const splitBySource = (symbols: string[]): { sina: string[]; gateio: string[] } 
 };
 
 /**
- * 获取多个品种原始行情数据（支持 Sina + Binance 混合数据源）
+ * 获取多个品种原始行情数据（支持 Sina + Gate.io 混合数据源）
  */
 export const fetchMultipleRawQuotes = async (symbols: string[]): Promise<Record<string, string>> => {
   const { sina, gateio } = splitBySource(symbols);
@@ -64,11 +64,11 @@ export const fetchMultipleRawQuotes = async (symbols: string[]): Promise<Record<
     });
   }
 
-  // 获取 Binance 数据
+  // 获取 Gate.io 数据
   for (const fullSymbol of gateio) {
     try {
-      const binanceSymbol = fullSymbol.replace('gateio_, '');
-      const rawData = await fetchBinanceTicker(binanceSymbol);
+      const gateioSymbol = fullSymbol.replace('gateio_', '');
+      const rawData = await fetchGateioTicker(gateioSymbol);
       result[fullSymbol] = rawData;
     } catch (error) {
       console.error(`[Gate.io] 获取 ${fullSymbol} 失败:`, error);
