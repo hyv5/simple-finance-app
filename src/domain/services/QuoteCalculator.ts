@@ -178,4 +178,59 @@ export class QuoteCalculator {
       time: au.time,
     };
   }
+
+  /**
+   * 计算PAX黄金(人民币) - 将PAXGUSDT从USDT转换为人民币/克
+   */
+  calculatePAXG_CNY(paxg: Quote): Quote {
+    const priceCNY = (paxg.price * this.exchangeRate) / CONVERSION.OZ_TO_GRAM;
+    const prevPriceCNY = (paxg.prevClose * this.exchangeRate) / CONVERSION.OZ_TO_GRAM;
+    const change = priceCNY - prevPriceCNY;
+
+    return {
+      symbol: 'PAXG_CNY',
+      name: 'PAX黄金(人民币)',
+      price: priceCNY,
+      change,
+      changePercent: (change / prevPriceCNY) * 100,
+      high: (paxg.high * this.exchangeRate) / CONVERSION.OZ_TO_GRAM,
+      low: (paxg.low * this.exchangeRate) / CONVERSION.OZ_TO_GRAM,
+      open: (paxg.open * this.exchangeRate) / CONVERSION.OZ_TO_GRAM,
+      prevClose: prevPriceCNY,
+      volume: paxg.volume,
+      amount: paxg.amount,
+      time: paxg.time,
+    };
+  }
+
+  /**
+   * 计算PAX-COMEX金差价 - 对比代币金与期货金价格
+   */
+  calculatePAXGSpreadGC(paxg: Quote, gc: Quote): Quote {
+    const paxgCNY = (paxg.price * this.exchangeRate) / CONVERSION.OZ_TO_GRAM;
+    const gcCNY = (gc.price * this.exchangeRate) / CONVERSION.OZ_TO_GRAM;
+    const spread = paxgCNY - gcCNY;
+
+    const prevPaxgCNY = (paxg.prevClose * this.exchangeRate) / CONVERSION.OZ_TO_GRAM;
+    const prevGcCNY = (gc.prevClose * this.exchangeRate) / CONVERSION.OZ_TO_GRAM;
+    const prevSpread = prevPaxgCNY - prevGcCNY;
+
+    const change = spread - prevSpread;
+
+    return {
+      symbol: 'PAXG_SPREAD_GC',
+      name: 'PAX-COMEX金差价',
+      price: spread,
+      change,
+      changePercent: prevSpread !== 0 ? (change / Math.abs(prevSpread)) * 100 : 0,
+      high: Math.max(spread, prevSpread),
+      low: Math.min(spread, prevSpread),
+      open: prevSpread,
+      prevClose: prevSpread,
+      volume: 0,
+      amount: this.exchangeRate,
+      time: paxg.time,
+    };
+  }
+
 }
