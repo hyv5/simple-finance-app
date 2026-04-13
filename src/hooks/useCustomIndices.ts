@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { quoteDataCenter } from '../services/QuoteDataCenter';
 import { Quote } from '../domain/entities';
 import { QuoteCalculator } from '../domain/services/QuoteCalculator';
-import { GOLD_SYMBOLS, SILVER_SYMBOLS, PAXGUSDT_BINANCE } from '../constants/api';
+import { GOLD_SYMBOLS, SILVER_SYMBOLS, PAXGUSDT_GATEIO } from '../constants/api';
 import { useExchangeRate } from './useExchangeRate';
 
 // 基础品种代码
