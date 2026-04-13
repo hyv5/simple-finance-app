@@ -39,6 +39,8 @@ export const SYMBOL_NAME_MAP: Record<string, string> = {
   'RATIO_NY_GS': '纽约金银比',
   'RATIO_SH_GS': '上海金银比(千倍)',
   'binance_PAXGUSDT': 'PAX黄金/USDT',
+  'PAXG_CNY': 'PAX黄金(人民币)',
+  'PAXG_SPREAD_GC': 'PAX-COMEX金差价',
 };
 
 /**
@@ -78,6 +80,8 @@ export const BINANCE_API_BASE = 'https://api.binance.com/api/v3' as const;
 export const CRYPTO_SYMBOLS = {
   PAXGUSDT: 'PAXGUSDT',
 } as const;
+
+export const PAXGUSDT_BINANCE = `binance_${CRYPTO_SYMBOLS.PAXGUSDT}` as const;
 
 /**
  * K 线周期
