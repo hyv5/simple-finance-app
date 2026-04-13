@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { quoteDataCenter } from '../services/QuoteDataCenter';
 import { Quote } from '../domain/entities';
 import { QuoteCalculator } from '../domain/services/QuoteCalculator';
-import { GOLD_SYMBOLS, SILVER_SYMBOLS } from '../constants/api';
+import { GOLD_SYMBOLS, SILVER_SYMBOLS, PAXGUSDT_BINANCE } from '../constants/api';
 import { useExchangeRate } from './useExchangeRate';
 
 // 基础品种代码
@@ -11,6 +11,7 @@ const BASE_SYMBOLS = {
   COMEX_SILVER: SILVER_SYMBOLS.COMEX_SILVER,
   SHFE_GOLD: GOLD_SYMBOLS.SHFE_GOLD,
   SHFE_SILVER: SILVER_SYMBOLS.SHFE_SILVER,
+  PAXG: PAXGUSDT_BINANCE,
 };
 
 /**
@@ -103,6 +104,15 @@ export const useAllCustomIndices = () => {
     if (au && ag) {
       newIndices['RATIO_SH_GS'] = calculator.calculateRatioSH_GS(au, ag);
     }
+    
+    const paxg = baseQuotes[BASE_SYMBOLS.PAXG];
+    if (paxg) {
+      newIndices['PAXG_CNY'] = calculator.calculatePAXG_CNY(paxg);
+    }
+    
+    if (paxg && gc) {
+      newIndices['PAXG_SPREAD_GC'] = calculator.calculatePAXGSpreadGC(paxg, gc);
+    }
 
     setIndices(newIndices);
   }, [baseQuotes, exchangeRate, baseLoading]);
@@ -116,7 +126,7 @@ export const useAllCustomIndices = () => {
 /**
  * 获取单个自定义指数
  */
-export const useCustomIndex = (type: 'GC_CNY' | 'SI_CNY' | 'SPREAD_GC_AU0' | 'SPREAD_SI_AG0' | 'RATIO_NY_GS' | 'RATIO_SH_GS') => {
+export const useCustomIndex = (type: 'GC_CNY' | 'SI_CNY' | 'SPREAD_GC_AU0' | 'SPREAD_SI_AG0' | 'RATIO_NY_GS' | 'RATIO_SH_GS' | 'PAXG_CNY' | 'PAXG_SPREAD_GC') => {
   const { data: indices, isLoading } = useAllCustomIndices();
   
   return {
