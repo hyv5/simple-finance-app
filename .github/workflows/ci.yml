@@ -70,6 +70,53 @@ jobs:
       - name: Install dependencies
         run: npm ci --legacy-peer-deps
 
+      - name: Create react-native-kline-view CI stub
+        run: |
+          mkdir -p ci-stubs/react-native-kline-view
+          cat > ci-stubs/react-native-kline-view/package.json << 'EOF'
+          {"name":"react-native-kline-view","version":"0.0.0-ci-stub","main":"index.js","types":"index.d.ts"}
+          EOF
+          cat > ci-stubs/react-native-kline-view/index.js << 'EOF'
+          import React from "react";
+          import { View, Text, StyleSheet } from "react-native";
+
+          export const KLineView = ({ optionList, style }) => {
+            return (
+              <View style={[styles.container, style]}>
+                <Text style={styles.text}>KLineView: CI stub (native module not available)</Text>
+              </View>
+            );
+          };
+
+          const styles = StyleSheet.create({
+            container: {
+              flex: 1,
+              justifyContent: "center",
+              alignItems: "center",
+              backgroundColor: "#f0f0f0",
+            },
+            text: {
+              fontSize: 14,
+              color: "#666",
+              textAlign: "center",
+            },
+          });
+
+          export default KLineView;
+          EOF
+          cat > ci-stubs/react-native-kline-view/index.d.ts << 'EOF'
+          import { Component } from "react";
+          import { ViewStyle } from "react-native";
+
+          export interface KLineViewProps {
+            optionList?: string;
+            style?: ViewStyle;
+          }
+
+          export declare class KLineView extends Component<KLineViewProps> {}
+          export default KLineView;
+          EOF
+
       - name: Prebuild Android
         run: npx expo prebuild --platform android --clean
 
