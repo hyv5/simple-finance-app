@@ -53,6 +53,7 @@ export const useQuote = (symbol: string, enabled: boolean = true) => {
 export const useQuotes = (symbols: string[]) => {
   const [quotes, setQuotes] = useState<Quote[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const symbolsKey = symbols.join(',');
 
   useEffect(() => {
     if (symbols.length === 0) {
@@ -95,7 +96,7 @@ export const useQuotes = (symbols: string[]) => {
     return () => {
       unsubscribes.forEach(unsub => unsub());
     };
-  }, [symbols.join(',')]);
+  }, [symbolsKey]);
 
   // 手动刷新函数
   const refetch = useCallback(async () => {

@@ -1,5 +1,6 @@
 import React, { useMemo } from 'react';
 import { View, StyleSheet, ActivityIndicator } from 'react-native';
+// eslint-disable-next-line import/no-unresolved -- Native module, not available in CI
 import { KLineView } from 'react-native-kline-view';
 import { useThemeColor } from '@/hooks/use-theme-color';
 import { KLine } from '@/src/domain/entities';
@@ -106,7 +107,7 @@ export const ProfessionalKLineChart: React.FC<ProfessionalKLineChartProps> = ({
     };
 
     return JSON.stringify(config);
-  }, [data, isDark, textColor]);
+  }, [data, isDark]);
 
   if (isLoading || !optionList) {
     return (

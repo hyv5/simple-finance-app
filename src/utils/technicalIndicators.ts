@@ -153,6 +153,7 @@ export const calculateKDJ = (
   
   const kValues: number[] = [];
   const dValues: number[] = [];
+  const jValues: number[] = [];
   let prevK = 50;
   let prevD = 50;
   
@@ -168,6 +169,7 @@ export const calculateKDJ = (
     
     kValues.push(k);
     dValues.push(d);
+    jValues.push(j);
     prevK = k;
     prevD = d;
   }
@@ -176,7 +178,7 @@ export const calculateKDJ = (
     ...item,
     kdjK: kValues[index],
     kdjD: dValues[index],
-    kdjJ: kValues[index] * 3 - dValues[index] * 2,
+    kdjJ: jValues[index],
   }));
 };
 

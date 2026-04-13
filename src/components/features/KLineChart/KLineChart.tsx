@@ -80,7 +80,7 @@ export const KLineChart: React.FC<KLineChartProps> = ({ data, type = 'daily' }) 
       </body>
       </html>
     `;
-  }, [textColor]);
+  }, [textColor, data, type]);
 
   if (!data || data.length === 0) {
     return (

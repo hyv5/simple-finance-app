@@ -9,12 +9,6 @@ import { parseQuote } from '../domain/parsers/QuoteParser';
 // 订阅者回调函数类型
 type SubscriberCallback = (quote: Quote | null) => void;
 
-// 订阅信息
-interface Subscription {
-  symbol: string;
-  callback: SubscriberCallback;
-}
-
 class QuoteDataCenter {
   private subscriptions: Map<string, Set<SubscriberCallback>> = new Map();
   private quoteCache: Map<string, Quote> = new Map();

@@ -1,16 +1,6 @@
 import { KLine } from '../entities';
 
 /**
- * 解析时间字符串为时间戳
- */
-const parseTime = (timeStr: string): number => {
-  if (timeStr.includes('-') && timeStr.includes(':')) {
-    return new Date(timeStr).getTime();
-  }
-  return new Date().getTime();
-};
-
-/**
  * K线数据解析器
  */
 export class KLineParser {
