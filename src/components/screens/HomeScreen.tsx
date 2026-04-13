@@ -5,11 +5,12 @@ import { ThemedView } from '@/components/themed-view';
 import { QuoteTileContainer } from '@/src/components/features/QuoteTile';
 import { useQuotes } from '@/src/hooks/useQuote';
 import { useExchangeRate } from '@/src/hooks/useExchangeRate';
-import { GOLD_SYMBOLS, SILVER_SYMBOLS } from '@/src/constants/api';
+import { GOLD_SYMBOLS, SILVER_SYMBOLS, CRYPTO_SYMBOLS } from '@/src/constants/api';
 import { useQueryClient } from '@tanstack/react-query';
 
 const goldSymbols = [GOLD_SYMBOLS.COMEX_GOLD, GOLD_SYMBOLS.SHFE_GOLD];
 const silverSymbols = [SILVER_SYMBOLS.COMEX_SILVER, SILVER_SYMBOLS.SHFE_SILVER];
+const cryptoSymbols = [`binance_${CRYPTO_SYMBOLS.PAXGUSDT}`];
 
 /**
  * 汇率显示组件
@@ -101,6 +102,8 @@ export default function HomeScreen() {
         <QuoteGroup title="黄金行情" symbols={goldSymbols} />
         <View style={styles.divider} />
         <QuoteGroup title="白银行情" symbols={silverSymbols} />
+        <View style={styles.divider} />
+        <QuoteGroup title="加密货币" symbols={cryptoSymbols} />
       </ScrollView>
     </ThemedView>
   );
