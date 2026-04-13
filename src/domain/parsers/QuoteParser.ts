@@ -166,8 +166,6 @@ export const parseQuote = (symbol: string, rawData: string): Quote => {
     return parseFXQuote(symbol, rawData);
   } else if (symbol.startsWith('f_')) {
     return parseFundQuote(symbol, rawData);
-  }
-
   } else if (symbol.startsWith('binance_')) {
     return parseBinanceTicker(symbol, rawData);
   }
