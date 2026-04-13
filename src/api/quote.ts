@@ -20,9 +20,6 @@ export const fetchRawQuote = async (symbol: string): Promise<string> => {
 };
 
 /**
- * 获取多个品种原始行情数据
- */
-/**
  * 从 Binance 获取单个币种行情
  */
 export const fetchBinanceTicker = async (symbol: string): Promise<string> => {
@@ -50,18 +47,10 @@ const splitBySource = (symbols: string[]): { sina: string[]; binance: string[] }
   return { sina, binance };
 };
 
+/**
+ * 获取多个品种原始行情数据（支持 Sina + Binance 混合数据源）
+ */
 export const fetchMultipleRawQuotes = async (symbols: string[]): Promise<Record<string, string>> => {
-  const data = await fetchRawQuoteData(symbols);
-  const result: Record<string, string> = {};
-  
-  symbols.forEach(symbol => {
-    const regex = new RegExp(`var hq_str_${symbol}="(.*?)"`);
-    const match = data.match(regex);
-    result[symbol] = match?.[1] || '';
-  });
-  
-  return result;
-};
   const { sina, binance } = splitBySource(symbols);
   const result: Record<string, string> = {};
 
